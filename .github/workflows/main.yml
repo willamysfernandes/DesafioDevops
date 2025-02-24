@@ -40,4 +40,4 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPOSITORY }}
         image_name: ${{ env.REPOSITORY_NAME }}
         image_tag: ${{ steps.meta.outputs.version }}
-        context: ./DesafioDevOps/base-test-api/
+        context: ./DesafioDevops/base-test-api/
