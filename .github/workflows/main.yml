@@ -6,7 +6,11 @@ on:
 env:
   REPOSITORY_NAME: desafio
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-
+  GCP_ZONE: ${{secrets.GCP_ZONE}}
+  GCP_CLUSTER_NAME: ${{secrets.GCP_CLUSTER_NAME}}
+  DEPLOYMENT_NAME: desafio
+  CONTAINER_NAME: desafio
+  NAMESPACE: default
 jobs:
   build-and-push-gcp:
     name: Build and push to GCP
@@ -41,3 +45,25 @@ jobs:
         image_name: ${{ env.REPOSITORY_NAME }}
         image_tag: ${{ steps.meta.outputs.version }}
         context: ./base-test-api
+    - name: Save Image Tag
+      run: echo "IMAGE_TAG=${{ steps.meta.outputs.version }}" >> $GITHUB_ENV
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Update kube config
+      run: gcloud container clusters get-credentials ${{env.GCP_CLUSTER_NAME}} --zone ${{env.GCP_ZONE}} --project ${{env.GCP_PROJECT_ID}}
+
+    - name: Get GKE credentials
+      uses: google-github-actions/get-gke-credentials@v2
+      with:
+        cluster_name: ${{env.GCP_CLUSTER_NAME}}
+        location: ${{env.GCP_ZONE}}
+
+    - name: Deploy to GKE
+      run: |
+        kubectl set image deployment/desafio \
+          desafio=${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REPOSITORY }}/desafio:$IMAGE_TAG \
+          -n default
