@@ -19,3 +19,6 @@ jobs:
       GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
       GCP_ARTIFACT_REGISTRY: ${{ secrets.GCP_ARTIFACT_REGISTRY }}
       GCP_ARTIFACT_REPOSITORY: ${{ secrets.GCP_ARTIFACT_REPOSITORY }}
+    permissions:
+      contents: read
+      packages: write
