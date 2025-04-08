@@ -18,7 +18,7 @@ spec:
       containers:
       - name: desafio
         imagePullPolicy: Always
-        image: us-central1-docker.pkg.dev/winter-surf-452116-n1/desafiodevops1/desafio:desafio-fe2c5ad
+        image: us-central1-docker.pkg.dev/winter-surf-452116-n1/desafiodevops1/desafio:desafio-fead3fb
         resources:
           limits:
             memory: "256Mi"
