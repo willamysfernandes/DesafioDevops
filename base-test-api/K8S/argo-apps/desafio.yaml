@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: desafio
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: desafio=us-central1-docker.pkg.dev/winter-surf-452116-n1/desafiodevops1/desafio
+    argocd-image-updater.argoproj.io/desafio.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: git
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/willamysfernandes/DesafioDevops.git
+    targetRevision: main
+    path: base-test-api/K8S
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
