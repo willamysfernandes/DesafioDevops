@@ -20,5 +20,5 @@ jobs:
       GCP_ARTIFACT_REGISTRY: ${{ secrets.GCP_ARTIFACT_REGISTRY }}
       GCP_ARTIFACT_REPOSITORY: ${{ secrets.GCP_ARTIFACT_REPOSITORY }}
     permissions:
-      contents: read
+      contents: write
       packages: write
