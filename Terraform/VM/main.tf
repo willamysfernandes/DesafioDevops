@@ -1,8 +1,3 @@
-provider "google" {
-  project = "meu-projeto-id"   # Substitua pelo seu ID do projeto GCP
-  region  = "us-central1"
-}
-
 resource "google_compute_instance" "minha_vm" {
   name         = "minha-vm"
   machine_type = "e2-micro"  # Tipo de máquina (econômico)
