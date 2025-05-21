@@ -1,0 +1,48 @@
+---
+- name: Instalar Docker em VM do Google Cloud
+  hosts: vms_gcp
+  become: true
+
+  tasks:
+    - name: Atualizar pacotes
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Instalar dependências do Docker
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+
+    - name: Adicionar chave GPG oficial do Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adicionar repositório do Docker
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian bullseye stable
+        state: present
+        filename: docker
+
+
+    - name: Instalar Docker Engine
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: latest
+        update_cache: yes
+
+    - name: Garantir que o serviço do Docker está ativo
+      service:
+        name: docker
+        state: started
+        enabled: yes
+

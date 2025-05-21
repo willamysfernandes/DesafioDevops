@@ -1,0 +1,32 @@
+- name: Instalar Terraform no Debian
+  hosts: all
+  become: yes
+  tasks:
+    - name: Instalar dependências
+      apt:
+        name:
+          - gnupg
+          - software-properties-common
+          - curl
+        state: present
+        update_cache: yes
+
+    - name: Adicionar chave GPG oficial da HashiCorp
+      ansible.builtin.apt_key:
+        url: https://apt.releases.hashicorp.com/gpg
+        state: present
+
+    - name: Adicionar repositório oficial da HashiCorp
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] https://apt.releases.hashicorp.com bullseye main"
+        state: present
+        filename: hashicorp
+
+    - name: Atualizar cache dos pacotes
+      apt:
+        update_cache: yes
+
+    - name: Instalar Terraform
+      apt:
+        name: terraform
+        state: present
